@@ -1,0 +1,25 @@
+﻿@model List<Category>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Category Name</th>
+            <th scope="col">Movie</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>
+                    <a class="btn btn-primary" asp-controller="Customer" asp-action="ShowMoviesByCategory" asp-route-categoryId="@category.Id">Show</a>
+                </td>
+            </tr>
+        }
+
+
+    </tbody>
+</table>

@@ -1,0 +1,51 @@
+﻿@model List<Movie>
+
+<h2>Movies in this Category</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100 border-0">
+                <img src="/images/movies/@item.Images.FirstOrDefault()?.ImageUrl" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Movie Image">
+
+                <div class="card-body">
+                    <h5 class="card-title text-primary">@item.Name</h5>
+                    <p class="mb-1"><strong>Price:</strong> @item.Price</p>
+                    <p class="mb-1"><strong>Start:</strong> @item.StartDate.ToShortDateString()</p>
+                    <p class="mb-1"><strong>End:</strong> @item.EndtDate.ToShortDateString()</p>
+
+                    @{
+                        MovieStatus status;
+                        if (DateTime.Now < item.StartDate)
+                            status = MovieStatus.coming;
+                        else if (DateTime.Now > item.EndtDate)
+                            status = MovieStatus.expire;
+                        else
+                            status = MovieStatus.available;
+                    }
+
+                    <span class="badge
+                            @(status == MovieStatus.available ? "bg-success" :
+                              status == MovieStatus.expire ? "bg-danger" :
+                              "bg-info")">
+                        Status: @status.ToString()
+                    </span>
+
+                    <div class="mt-3">
+                        <a class="btn btn-outline-primary btn-sm w-100"
+                           asp-area="customer"
+                           asp-controller="Customer"
+                           asp-action="Details"
+                           asp-route-id="@item.Id">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="text-end mt-4">
+        <a asp-area="customer" asp-controller="Customer" asp-action="AllCategory" class="btn btn-dark px-4">Back</a>
+    </div>
+</div>
