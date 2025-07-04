@@ -1,0 +1,45 @@
+﻿@using Eticket.Models.ViewModels
+@model CinemaWithCategoryVM
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Movie.Name" class="form-label"></label>
+        <input asp-for="Movie.Name" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Movie.Description" class="form-label"></label>
+        <input asp-for="Movie.Description" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Movie.Price" class="form-label"></label>
+        <input asp-for="Movie.Price" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Movie.StartDate" class="form-label"></label>
+        <input asp-for="Movie.StartDate" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Movie.EndtDate" class="form-label"></label>
+        <input asp-for="Movie.EndtDate" class="form-control" type="date" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Movie.CategoryId" class="form-label">Category</label>
+        <select asp-for="Movie.CategoryId" class="form-select" asp-items="@(new SelectList(Model.categories, "Id", "Name"))">
+            <option value="">-- اختر تصنيف --</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Movie.CinemaId" class="form-label">Cinema</label>
+        <select asp-for="Movie.CinemaId" class="form-select" asp-items="@(new SelectList(Model.cinemas, "Id", "Name"))">
+            <option value="">-- اختر سينما --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

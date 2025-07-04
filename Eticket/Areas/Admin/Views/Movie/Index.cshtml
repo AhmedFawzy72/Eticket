@@ -1,0 +1,67 @@
+﻿@model List<Movie>
+
+<div class="container mt-4">
+    <div class="card shadow rounded-4 p-4">
+        <h5 class="mb-4">All Movies</h5>
+
+        <div class="text-end mb-3">
+            <a asp-area="Admin" asp-controller="Movie" asp-action="Create" class="btn btn-success">Create</a>
+        </div>
+
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Ceniema Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.StartDate</td>
+                        <td>@item.EndtDate</td>
+                        <td>@item.Category.Name</td>
+                        <td>@item.Cinema.Name</td>
+                        <td>
+                            @{
+                                MovieStatus status;
+                                if (DateTime.Now < item.StartDate)
+                                    status = MovieStatus.coming;
+                                else if (DateTime.Now > item.EndtDate)
+                                    status = MovieStatus.expire;
+                                else
+                                    status = MovieStatus.available;
+                            }
+
+                            <span class="badge
+                            @(status == MovieStatus.available ? "bg-success" :
+                              status == MovieStatus.expire ? "bg-danger" :
+                              "bg-info")">
+                               @status.ToString()
+                            </span>
+
+
+                        </td>
+                        <td>
+                            <a class="btn btn-primary me-1">Edit</a>
+                            <a class="btn btn-danger">Delete</a>
+                            <a class="btn btn-dark"  asp-area="customer"  asp-controller="Customer" asp-action="Details" asp-route-id="@item.Id">Details</a>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
