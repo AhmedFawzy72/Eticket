@@ -1,6 +1,10 @@
 ﻿using Eticket.Data;
 using Eticket.Models;
 using Eticket.Models.ViewModels;
+using Eticket.Utility;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+
 
 //using Eticket.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +13,19 @@ using Microsoft.EntityFrameworkCore;
 namespace Eticket.Areas.customer.Controllers
 {
     [Area("customer")]
+    
     public class CustomerController : Controller
     {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+
+        public CustomerController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+
+        }
 
 
         private ApplicationDbContext _context  = new ();
@@ -86,6 +101,102 @@ namespace Eticket.Areas.customer.Controllers
 
             return View(movies);
         }
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+                return RedirectToAction("Login", "Account"); 
+
+            return View(user);
+        }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFoundPage", "Home");
+            }
+
+            var vm = new EditProfileVM
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber
+            };
+
+            return View(vm);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditProfileVM editProfileVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(editProfileVM);
+            }
+
+            var user = await _userManager.FindByIdAsync(editProfileVM.Id);
+            if (user == null)
+            {
+                return RedirectToAction("NotFoundPage", "Home");
+            }
+
+            user.FirstName = editProfileVM.FirstName;
+            user.LastName = editProfileVM.LastName;
+            user.Email = editProfileVM.Email;
+            user.PhoneNumber = editProfileVM.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                TempData["success"] = "Profile Upadte Suessfully";
+                return RedirectToAction("Profile", new { id = user.Id });
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(editProfileVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM1 changePasswordVM1)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["error"] = "Please fill all password fields correctly.";
+                return RedirectToAction("Edit", new { id = _userManager.GetUserId(User) });
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePasswordVM1.CurrentPassword, changePasswordVM1.NewPassword);
+
+            if (result.Succeeded)
+            {
+                TempData["success"] = "Password changed successfully!";
+                await _signInManager.RefreshSignInAsync(user);
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    TempData["error"] = error.Description;
+                }
+            }
+
+            return RedirectToAction("Edit", new { id = user.Id });
+        }
+
 
     }
 }

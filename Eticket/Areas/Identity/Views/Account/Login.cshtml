@@ -1,0 +1,66 @@
+﻿@model Eticket.Models.ViewModels.LoginVm
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@section Script
+{
+       if(@TempData["notification-logout"] is not null)
+        {
+            <script>
+
+               toastr.success('@TempData["notification-logout"]');
+
+            </script>
+        }
+
+}
+
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="card shadow-lg p-4 rounded-4" style="width: 100%; max-width: 420px;">
+        <h2 class="text-center mb-4">Welcome Back</h2>
+        <p class="text-center text-muted mb-4">Please log in to your account</p>
+
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="EmailORUserName" class="form-control" placeholder="Username or Email" />
+                <label asp-for="EmailORUserName"></label>
+                <span asp-validation-for="EmailORUserName" class="text-danger small"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Password" class="form-control" placeholder="Password" type="password" />
+                <label asp-for="Password"></label>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" asp-for="RememberMe" />
+                <label class="form-check-label" asp-for="RememberMe">
+                    @Html.DisplayNameFor(model => model.RememberMe)
+                </label>
+            </div>
+
+            <div class="d-grid mb-3">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+        </form>
+
+        <div class="text-center">
+            <a href="/Identity/Account/Register"> You don't have an account? Register now</a>
+        </div>
+        <div class="text-center">
+            <a href="/Identity/Account/ForgetPassword"> Forget Password?</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

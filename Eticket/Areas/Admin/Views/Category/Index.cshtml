@@ -1,4 +1,17 @@
 ﻿@model List<Category>
+@* <h1>@TempData["Notifaction"]</h1> *@
+@section Scripts
+{
+        if(@TempData["Notifaction"] is not null)
+        {
+      <script>
+     toastr.success('@TempData["Notifaction"]');
+     </script>
+        }
+
+}
+
+
 
 <div class="container mt-4">
     <div class="card shadow rounded-4 p-4">

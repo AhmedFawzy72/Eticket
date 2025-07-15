@@ -1,5 +1,15 @@
 ﻿@model List<Movie>
 
+@section Scripts
+    {
+    if(@TempData["Login-Notification"] is not null)
+    {
+    <script>
+        toastr.success('@TempData["Login-Notification"]');
+
+    </script>
+    }
+}
 <div class="container mt-5">
     <!-- Filter Form -->
     <form class="mb-4">

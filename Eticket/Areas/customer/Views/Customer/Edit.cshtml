@@ -1,0 +1,99 @@
+﻿@using Eticket.Models.ViewModels
+@model EditProfileVM
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="card shadow rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="my-2"> Edit Your Profile @Model.FirstName</h4>
+                </div>
+
+                <div class="card-body p-4">
+
+                    @if (TempData["success"] != null)
+                    {
+                        <div class="alert alert-success text-center">@TempData["success"]</div>
+                    }
+
+                    @if (TempData["error"] != null)
+                    {
+                        <div class="alert alert-danger text-center">@TempData["error"]</div>
+                    }
+
+                    <!-- Edit Profile Form -->
+                    <form asp-action="Edit" method="post" class="mb-5">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label fw-bold"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label fw-bold"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label fw-bold"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PhoneNumber" class="form-label fw-bold"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-success px-4 rounded-pill"> Save Changes</button>
+                        </div>
+                    </form>
+
+                    <hr />
+
+                    <!-- Change Password Form -->
+                    <h5 class="text-center text-warning mb-3"> Change Password</h5>
+
+                    <form asp-action="ChangePassword" method="post">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Old Password</label>
+                                <input name="CurrentPassword" type="password" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">New Password</label>
+                                <input name="NewPassword" type="password" class="form-control" required />
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Confirm New Password</label>
+                                <input name="ConfirmNewPassword" type="password" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-warning px-4 rounded-pill"> Change Password</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

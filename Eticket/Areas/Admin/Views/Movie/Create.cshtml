@@ -30,14 +30,14 @@
     <div class="mb-3">
         <label asp-for="Movie.CategoryId" class="form-label">Category</label>
         <select asp-for="Movie.CategoryId" class="form-select" asp-items="@(new SelectList(Model.categories, "Id", "Name"))">
-            <option value="">-- اختر تصنيف --</option>
+            <option value="">--  select --</option>
         </select>
     </div>
 
     <div class="mb-3">
         <label asp-for="Movie.CinemaId" class="form-label">Cinema</label>
         <select asp-for="Movie.CinemaId" class="form-select" asp-items="@(new SelectList(Model.cinemas, "Id", "Name"))">
-            <option value="">-- اختر سينما --</option>
+            <option value="">-- select --</option>
         </select>
     </div>
 

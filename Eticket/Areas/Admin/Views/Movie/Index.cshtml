@@ -55,7 +55,7 @@
                         </td>
                         <td>
                             <a class="btn btn-primary me-1">Edit</a>
-                            <a class="btn btn-danger">Delete</a>
+                            <a class="btn btn-danger" asp-area="Admin" asp-controller="Movie" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                             <a class="btn btn-dark"  asp-area="customer"  asp-controller="Customer" asp-action="Details" asp-route-id="@item.Id">Details</a>
 
                         </td>
